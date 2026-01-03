@@ -65,7 +65,6 @@ class SimpleMathTest {
             math.divide(6.2D, 0D);
         }, () -> "Actual message");
 //        fail();
-
         assertEquals(expectedMessage, actual.getMessage(), () -> "Unexpected exception message");
     }
 }
