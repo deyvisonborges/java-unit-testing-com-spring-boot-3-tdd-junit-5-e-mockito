@@ -58,8 +58,14 @@ class SimpleMathTest {
     }
 
     @Test()
-    @Disabled("Test Disabled")
+//    @Disabled("Test Disabled")
     void testDivision_When_FirstNumberIsDividedByZero_ShouldThrowArithmeticException() {
-        fail();
+        var expectedMessage = "Impossible divide by zero";
+        var actual = assertThrows(ArithmeticException.class, () -> {
+            math.divide(6.2D, 0D);
+        }, () -> "Actual message");
+//        fail();
+
+        assertEquals(expectedMessage, actual.getMessage(), () -> "Unexpected exception message");
     }
 }
