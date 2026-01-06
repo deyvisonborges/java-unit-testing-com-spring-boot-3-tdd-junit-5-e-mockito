@@ -1,13 +1,11 @@
 package org.java;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.RepeatedTest;
-import org.junit.jupiter.api.RepetitionInfo;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@Order(2)
 public class DemoRepeatedTest {
     SimpleMath math;
     @BeforeEach()

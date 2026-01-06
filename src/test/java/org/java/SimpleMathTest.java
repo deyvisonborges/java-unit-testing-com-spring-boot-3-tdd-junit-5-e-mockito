@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.*;
 
+@Order(1)
 @DisplayName("Test Math Operations in SimpleMath Class")
 class SimpleMathTest {
     SimpleMath math;

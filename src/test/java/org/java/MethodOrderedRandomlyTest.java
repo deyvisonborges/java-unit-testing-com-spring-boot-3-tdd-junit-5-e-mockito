@@ -6,6 +6,7 @@ import org.junit.jupiter.api.*;
 // Mas posso fazer com que rode aleatoriamente
 //@TestMethodOrder(MethodOrderer.Random.class) // roda a ordem de forma aleatoria - ordenacao randomica
 //@TestMethodOrder(MethodOrderer.MethodName.class) // ordenacao por nome (ja eh padrao, mas estou explicitando)
+@Order(3)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class) // ordenacao por indice
 public class MethodOrderedRandomlyTest {
 
