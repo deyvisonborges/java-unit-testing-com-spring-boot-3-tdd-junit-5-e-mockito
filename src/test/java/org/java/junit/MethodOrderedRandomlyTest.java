@@ -1,4 +1,4 @@
-package org.java;
+package org.java.junit;
 
 import org.junit.jupiter.api.*;
 

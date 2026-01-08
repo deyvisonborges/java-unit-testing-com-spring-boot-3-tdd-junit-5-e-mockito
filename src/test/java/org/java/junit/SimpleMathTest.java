@@ -1,7 +1,8 @@
-package org.java;
+package org.java.junit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.java.SimpleMath;
 import org.junit.jupiter.api.*;
 
 @Order(1)

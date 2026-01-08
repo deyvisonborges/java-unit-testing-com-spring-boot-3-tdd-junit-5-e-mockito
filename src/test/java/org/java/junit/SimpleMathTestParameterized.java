@@ -1,5 +1,6 @@
-package org.java;
+package org.java.junit;
 
+import org.java.SimpleMath;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
