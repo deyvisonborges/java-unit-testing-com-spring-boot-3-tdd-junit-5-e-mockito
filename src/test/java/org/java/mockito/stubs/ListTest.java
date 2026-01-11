@@ -41,13 +41,16 @@ public class ListTest {
         Assertions.assertNull(list.get(2));
     }
 
+
     @Test
-    void testMockList_When_GetIsCalledWithArgumentMatcher_ShouldReturnTestValue() {
-        List<String> list = Mockito.mock(List.class);
-        // “Se pedirem o item da posição 0 da lista, finja que o valor é "Test Value".”
+    void testMockList_When_ThrowsAnException() {
+        List<?> list = Mockito.mock(List.class);
         Mockito.when(list.get(ArgumentMatchers.anyInt()))
-                .thenReturn("Test Value");
-        Assertions.assertEquals("Test Value", list.get(ArgumentMatchers.anyInt()));
-        Assertions.assertEquals("Test Value", list.get(ArgumentMatchers.anyInt()));
+            .thenThrow(new RuntimeException("Foor Bar"));
+        Assertions.assertThrows(
+            RuntimeException.class,
+            () -> {list.get(ArgumentMatchers.anyInt());},
+            () -> "Should have a throw an RuntimeException"
+        );
     }
 }
