@@ -56,4 +56,22 @@ public class CourseBusinessMockWithBDDTest {
         Mockito.verify(mockService, Mockito.never())
             .deleteCourse("Stub Spring 3");
     }
+
+    @Test
+    @DisplayName("Using BDD Mockito then, should never")
+    void thenShouldNever() {
+        BDDMockito.given(mockService.retrieveCourse("Spring")).willReturn(courses);
+        business.deleteCoursesNotRelatedToSpring("Spring");
+//        Mockito.verify(mockService).deleteCourse("Stub NotRelated");
+//        Mockito.verify(mockService, Mockito.times(1))
+//            .deleteCourse("Stub NotRelated");
+//        Mockito.verify(mockService, Mockito.atLeast(1))
+//                .deleteCourse("Stub NotRelated");
+        BDDMockito.then(mockService)
+            .should()
+            .deleteCourse("Stub NotRelated");
+        BDDMockito.then(mockService)
+            .should(BDDMockito.never())
+            .deleteCourse("Stub Spring 3");
+    }
 }
