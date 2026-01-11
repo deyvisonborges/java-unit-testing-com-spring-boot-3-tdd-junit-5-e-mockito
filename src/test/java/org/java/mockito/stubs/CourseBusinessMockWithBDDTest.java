@@ -49,7 +49,9 @@ public class CourseBusinessMockWithBDDTest {
 //        Mockito.verify(mockService).deleteCourse("Stub NotRelated");
 //        Mockito.verify(mockService, Mockito.times(1))
 //            .deleteCourse("Stub NotRelated");
-        Mockito.verify(mockService, Mockito.atLeast(1))
+//        Mockito.verify(mockService, Mockito.atLeast(1))
+//                .deleteCourse("Stub NotRelated");
+        Mockito.verify(mockService, Mockito.atLeastOnce())
                 .deleteCourse("Stub NotRelated");
         Mockito.verify(mockService, Mockito.never())
             .deleteCourse("Stub Spring 3");
