@@ -1,17 +1,17 @@
 package org.java.mockito.stubs;
 
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
 import org.java.mockito.CourseBusiness;
 import org.java.mockito.ICourseService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.mockito.BDDMockito;
+
 import java.util.Arrays;
 import java.util.List;
 
-public class CourseBusinessMockTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public class CourseBusinessMockWithBDDTest {
     ICourseService mockService;
     CourseBusiness business;
 
@@ -25,13 +25,13 @@ public class CourseBusinessMockTest {
     @Test
     void testCourseRelatedToSpring_When_UsingAStub() {
         List<String> courses = Arrays.asList(
-            "Stub Spring 1",
-            "Stub Spring 2",
-            "Stub Spring 3",
-            "Stub Not Sprin.. 3"
+                "Stub Spring 1",
+                "Stub Spring 2",
+                "Stub Spring 3",
+                "Stub Not Sprin.. 3"
         );
-        BDDMockito.given(mockService.retrieveCourse("Spring")).willReturn(courses);
+        Mockito.when(mockService.retrieveCourse("Spring")).thenReturn(courses);
         var filters = business.retrieveCoursesRelatedToSpring("Spring");
-        MatcherAssert.assertThat(filters.size(), Matchers.is(3));
+        assertEquals(3, filters.size());
     }
 }
