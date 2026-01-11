@@ -15,15 +15,22 @@ public class CourseBusiness {
 
         if("For Bar".equals(student)) return filteredCourses;
 
-//        Em runtime, o mockito intercepta o courseService, e mocka a implementacao dele
+        // Em runtime, o mockito intercepta o courseService, e mocka a implementacao dele
         var allCourses = courseService.retrieveCourse(student);
-
         for(String course : allCourses) {
             if(course.contains("Spring")) {
                 filteredCourses.add(course);
             }
         }
-
         return filteredCourses;
+    }
+
+    public void deleteCoursesNotRelatedToSpring(String student) {
+        var allCourses = courseService.retrieveCourse(student);
+        for(String course : allCourses) {
+            if(!course.contains("Spring")) {
+                courseService.deleteCourse(course);
+            }
+        }
     }
 }

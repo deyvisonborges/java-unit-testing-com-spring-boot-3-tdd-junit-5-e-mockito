@@ -15,4 +15,9 @@ public class CourseServiceStub implements ICourseService {
             "Stub Not Sprin.. 3"
         );
     }
+
+    @Override
+    public void deleteCourse(String courseName) {
+
+    }
 }
