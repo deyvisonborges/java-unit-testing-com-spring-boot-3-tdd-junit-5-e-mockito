@@ -1,10 +1,13 @@
 package org.java.mockito.stubs;
 
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.java.mockito.CourseBusiness;
 import org.java.mockito.ICourseService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.BDDMockito;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -73,5 +76,18 @@ public class CourseBusinessMockWithBDDTest {
         BDDMockito.then(mockService)
             .should(BDDMockito.never())
             .deleteCourse("Stub Spring 3");
+    }
+
+    @Test
+    @DisplayName("Using BDD Mockito then, should never")
+    void capturingArguments() {
+        BDDMockito.given(mockService.retrieveCourse("Spring")).willReturn(courses);
+        ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+        var arg = "Stub NotRelated";
+        business.deleteCoursesNotRelatedToSpring("Spring");
+        BDDMockito.then(mockService)
+            .should(BDDMockito.times(1))
+            .deleteCourse(captor.capture());
+        MatcherAssert.assertThat(captor.getValue(), Matchers.is(arg));
     }
 }
