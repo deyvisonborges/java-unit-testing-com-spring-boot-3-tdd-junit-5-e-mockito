@@ -123,4 +123,13 @@ public class ProductRepositoryTest {
         Assertions.assertNotNull(result);
         Assertions.assertEquals(person.getName(), result.getName());
     }
+
+    @Test
+    @DisplayName("buscarPersonComJPQLNativeSQLNamedParameters")
+    void buscarPersonComJPQLNativeSQLNamedParameters() {
+        personRepository.save(person);
+        Person result = this.personRepository.findByJPQLNativeQueryNamedParameters("Test name", "Test email");
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(person.getName(), result.getName());
+    }
 }

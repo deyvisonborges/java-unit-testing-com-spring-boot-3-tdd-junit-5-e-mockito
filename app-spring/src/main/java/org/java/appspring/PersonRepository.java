@@ -20,4 +20,8 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
     // Define custom query using native query / native sql with index parameters
     @Query(value = "select * from person p where p.name =?1 and p.email =?2", nativeQuery = true)
     Person findByJPQLNativeQuery(String name, String email);
+
+    // Define custom query using native query / native sql with named parameters
+    @Query(value = "select * from person p where p.name = :name and p.email = :email", nativeQuery = true)
+    Person findByJPQLNativeQueryNamedParameters(@Param("name") String name, @Param("email") String email);
 }
