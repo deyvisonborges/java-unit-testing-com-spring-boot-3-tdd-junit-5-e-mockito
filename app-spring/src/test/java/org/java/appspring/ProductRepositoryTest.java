@@ -101,8 +101,25 @@ public class ProductRepositoryTest {
     @DisplayName("buscarPersonComJPQL")
     void buscarPersonComJPQL() {
         personRepository.save(person);
-
         Person result = this.personRepository.findByJPQL(person.getName(), person.getEmail());
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(person.getName(), result.getName());
+    }
+
+    @Test
+    @DisplayName("buscarPersonComJPQLNamedParameters")
+    void buscarPersonComJPQLNamedParameters() {
+        personRepository.save(person);
+        Person result = this.personRepository.findByJPQLNamedParameters(person.getName(), person.getEmail());
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(person.getName(), result.getName());
+    }
+
+    @Test
+    @DisplayName("buscarPersonComJPQLNativeSQL")
+    void buscarPersonComJPQLNativeSQL() {
+        personRepository.save(person);
+        Person result = this.personRepository.findByJPQLNativeQuery("Test name", "Test email");
         Assertions.assertNotNull(result);
         Assertions.assertEquals(person.getName(), result.getName());
     }
