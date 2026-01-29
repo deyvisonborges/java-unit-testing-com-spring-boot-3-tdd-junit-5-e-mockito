@@ -1,0 +1,86 @@
+package org.java.appspring;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
+
+import java.util.List;
+
+@DataJpaTest
+public class ProductRepositoryTest {
+
+    @Autowired
+    private PersonRepository personRepository;
+
+    Person person;
+    Person person2;
+
+    @BeforeEach
+    void setUp() {
+        person = new Person();
+        person.setName("Test name");
+        person.setEmail("Test email");
+
+        person2 = new Person();
+        person2.setName("Test name2");
+        person2.setEmail("Test email2");
+    }
+
+    @Test()
+    @DisplayName("deveRetornarUmObjetoPersonQueFoiSalvo")
+    void deveRetornarUmObjetoPersonQueFoiSalvo() {
+        var result = this.personRepository.save(person);
+        Assertions.assertNotNull(result);
+        // precisa do equals e do hashcode
+        Assertions.assertEquals(person, result);
+        Assertions.assertEquals(1, this.personRepository.count());
+        Assertions.assertEquals(person.getEmail(), result.getEmail());
+    }
+
+    @Test
+    @DisplayName("verificarSeAListagemEstaRetornandoCorretamenteOsDadosSalvosNoBanco")
+    void verificarSeAListagemEstaRetornandoCorretamenteOsDadosSalvosNoBanco() {
+        this.personRepository.save(person);
+        this.personRepository.save(person2);
+        List<Person> result = this.personRepository.findAll();
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(2, result.size());
+        Assertions.assertEquals(person, result.get(0));
+        Assertions.assertEquals(person2, result.get(1));
+    }
+
+    @Test
+    @DisplayName("buscarPersonPeloID")
+    void buscarPersonPeloID() {
+        personRepository.save(person);
+        var savedPerson = this.personRepository.findById(person.getId());
+        Assertions.assertNotNull(savedPerson);
+        Assertions.assertEquals(1, this.personRepository.count());
+    }
+    @Test
+    @DisplayName("buscarPersonPeloEmail")
+    void buscarPersonPeloEmail() {
+        personRepository.save(person);
+        var savedPerson = this.personRepository.findByEmail(person.getEmail()).get();
+        Assertions.assertNotNull(savedPerson);
+        Assertions.assertEquals(1, this.personRepository.count());
+        Assertions.assertEquals(person.getEmail(), savedPerson.getEmail());
+    }
+
+    @Test
+    @DisplayName("atualizarPerson")
+    void atualizarPerson() {
+        personRepository.save(person);
+
+        var personUpdated = this.personRepository.findById(person.getId()).get();
+        personUpdated.setEmail("updated email");
+        this.personRepository.save(personUpdated);
+
+        var savedPerson = this.personRepository.findByEmail(personUpdated.getEmail()).get();
+        Assertions.assertEquals(1, this.personRepository.count());
+        Assertions.assertEquals(personUpdated.getEmail(), savedPerson.getEmail());
+    }
+}

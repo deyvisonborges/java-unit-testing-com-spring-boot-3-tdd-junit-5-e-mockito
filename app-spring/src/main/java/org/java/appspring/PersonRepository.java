@@ -2,4 +2,9 @@ package org.java.appspring;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface PersonRepository extends JpaRepository<Person, Long> { }
+import java.util.Optional;
+
+public interface PersonRepository extends JpaRepository<Person, Long> {
+    Optional<Person> findByName(String name);
+    Optional<Person> findByEmail(String email);
+}

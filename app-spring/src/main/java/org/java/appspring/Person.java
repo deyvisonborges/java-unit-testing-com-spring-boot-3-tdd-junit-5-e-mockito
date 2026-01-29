@@ -40,4 +40,18 @@ public class Person implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    // Sem isso, o Java compara referência de memória, não conteúdo.
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Person)) return false;
+        Person person = (Person) o;
+        return id != null && id.equals(person.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }
