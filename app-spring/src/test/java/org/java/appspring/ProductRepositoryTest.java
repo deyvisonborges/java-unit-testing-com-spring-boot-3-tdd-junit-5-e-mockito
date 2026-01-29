@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 
 import java.util.List;
+import java.util.Optional;
 
 @DataJpaTest
 public class ProductRepositoryTest {
@@ -82,5 +83,27 @@ public class ProductRepositoryTest {
         var savedPerson = this.personRepository.findByEmail(personUpdated.getEmail()).get();
         Assertions.assertEquals(1, this.personRepository.count());
         Assertions.assertEquals(personUpdated.getEmail(), savedPerson.getEmail());
+    }
+
+    @Test
+    @DisplayName("deletarPerson")
+    void deletarPerson() {
+        personRepository.save(person);
+        Assertions.assertEquals(1, this.personRepository.count());
+        personRepository.deleteById(person.getId());
+
+        Optional<Person> result = this.personRepository.findById(person.getId());
+        Assertions.assertFalse(result.isPresent());
+        Assertions.assertEquals(0, this.personRepository.count());
+    }
+
+    @Test
+    @DisplayName("buscarPersonComJPQL")
+    void buscarPersonComJPQL() {
+        personRepository.save(person);
+
+        Person result = this.personRepository.findByJPQL(person.getName(), person.getEmail());
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(person.getName(), result.getName());
     }
 }
