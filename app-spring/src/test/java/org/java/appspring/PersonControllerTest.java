@@ -16,6 +16,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @WebMvcTest(PersonController.class)
 public class PersonControllerTest {
     @Autowired MockMvc mockMvc;
@@ -60,6 +63,18 @@ public class PersonControllerTest {
             .andDo(MockMvcResultHandlers.print())
             .andExpect(MockMvcResultMatchers.status().isOk())
             .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(Matchers.is(person.getName())));
+    }
+
+    @Test
+    void testFindAll() throws Exception {
+        Mockito.when(personService.findAll()).thenReturn(List.of(person, person2));
+        ResultActions response = mockMvc.perform(MockMvcRequestBuilders.get("/person/all"));
+
+        response.andDo(MockMvcResultHandlers.print())
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.size()").value(Matchers.is(2)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(Matchers.is(person.getName())))
+            .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value(Matchers.is(person2.getName())));
     }
 
 }
