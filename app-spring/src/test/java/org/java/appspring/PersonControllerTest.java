@@ -100,4 +100,39 @@ public class PersonControllerTest {
         response.andDo(MockMvcResultHandlers.print());
     }
 
+    @Test
+    void testUpdatePositiveScenario() throws Exception {
+        long personId = 1L;
+        ReflectionTestUtils.setField(person, "id", personId);
+        Mockito.when(personService.findById(personId)).thenReturn(person);
+        Mockito.when(personService.update(ArgumentMatchers.any(Person.class)))
+            .thenAnswer((invocation) -> invocation.getArguments()[0]);
+
+        ResultActions response = mockMvc.perform(MockMvcRequestBuilders
+                .put("/person") // Removi o /{id}
+                .content(objectMapper.writeValueAsString(person2))
+                .contentType(MediaType.APPLICATION_JSON));
+
+        response.andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(Matchers.is(person2.getName())));
+    }
+
+    @Test
+    void testUpdateNegativeScenario() throws Exception {
+        long personId = 1L;
+        ReflectionTestUtils.setField(person, "id", personId);
+        Mockito.when(personService.findById(personId)).thenReturn(person);
+        Mockito.when(personService.update(ArgumentMatchers.any(Person.class)))
+                .thenThrow(new RuntimeException("Not Found"));
+
+        ResultActions response = mockMvc.perform(MockMvcRequestBuilders
+                .put("/person") // Removi o /{id}
+                .content(objectMapper.writeValueAsString(person2))
+                .contentType(MediaType.APPLICATION_JSON));
+
+        response.andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
 }

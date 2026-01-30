@@ -33,8 +33,12 @@ public class PersonController {
     }
 
     @PutMapping
-    public void updatePerson(@RequestBody Person person) {
-        this.personService.update(person);
+    public ResponseEntity<Person> updatePerson(@RequestBody Person person) {
+        try {
+            return ResponseEntity.ok(this.personService.update(person));
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping("/{id}")
