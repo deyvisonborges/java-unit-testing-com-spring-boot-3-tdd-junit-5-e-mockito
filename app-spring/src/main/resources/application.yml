@@ -1,0 +1,9 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: app-spring
+
+logging:
+  level:
+    org.springframework.boot.autoconfigure.jdbc: DEBUG
