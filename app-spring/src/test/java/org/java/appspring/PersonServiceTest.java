@@ -1,6 +1,5 @@
 package org.java.appspring;
 
-import org.assertj.core.matcher.AssertionMatcher;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
-public class ProductServiceTest {
+public class PersonServiceTest {
     @Mock
     private PersonRepository personRepository;
 
