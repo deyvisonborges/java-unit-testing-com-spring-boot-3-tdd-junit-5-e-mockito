@@ -22,7 +22,7 @@ public class PersonController {
 
     @PostMapping
     public void createPerson(@RequestBody Person person) {
-        this.personService.createPerson();
+        this.personService.createPerson(person);
     }
 
     @PutMapping

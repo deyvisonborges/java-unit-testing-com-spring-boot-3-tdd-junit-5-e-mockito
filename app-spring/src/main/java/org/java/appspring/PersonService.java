@@ -4,6 +4,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
 
@@ -18,8 +19,12 @@ public class PersonService {
         this.personRepository = repository;
     }
 
-    public void createPerson() {
-        this.personRepository.save(makePerson());
+    public Person createPerson(Person person) {
+        Optional<Person> saverPerson = this.personRepository.findByEmail(person.getEmail());
+        if (saverPerson.isPresent()) {
+            throw new RuntimeException("Person already exists with email: " + person.getEmail());
+        }
+        return this.personRepository.save(person);
     }
 
     public List<Person> findAll() {
@@ -32,12 +37,12 @@ public class PersonService {
         return this.personRepository.findById(id).orElseThrow(() -> new RuntimeException("Person with id " + id + " not found"));
     }
 
-    public void update(Person person) {
+    public Person update(Person person) {
         var entity = this.findById(person.getId());
         entity.setName(person.getName());
         entity.setEmail(person.getEmail());
         logger.info("Updating person with id " + person.getId() + " with name " + person.getName());
-        this.personRepository.save(person);
+        return this.personRepository.save(person);
     }
 
     public void delete(Long id) {
