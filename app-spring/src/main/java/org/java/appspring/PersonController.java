@@ -42,7 +42,9 @@ public class PersonController {
     }
 
     @DeleteMapping("/{id}")
-    public void deletePerson(@PathVariable Long id) {
+    public ResponseEntity<Person> deletePerson(@PathVariable Long id) {
         this.personService.delete(id);
+        return ResponseEntity.noContent().build();
+
     }
 }

@@ -135,4 +135,15 @@ public class PersonControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
+    @Test
+    void testDeletePositiveScenario() throws Exception {
+        long personId = 1L;
+        ReflectionTestUtils.setField(person, "id", personId);
+        Mockito.when(personService.findById(personId)).thenReturn(person);
+        Mockito.doNothing().when(personService).delete(personId);
+
+        ResultActions response = mockMvc.perform(MockMvcRequestBuilders.delete("/person/{id}", personId));
+        response.andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
 }
