@@ -1,6 +1,7 @@
 package org.java.appspring;
 
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,8 +19,12 @@ public class PersonController {
     public List<Person> readPerson() { return this.personService.findAll();}
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Person readOnePerson(@PathVariable(value = "id") Long id) {
-        return this.personService.findById(id);
+    public ResponseEntity<Person> readOnePerson(@PathVariable(value = "id") Long id) {
+        try {
+            return ResponseEntity.ok(this.personService.findById(id));
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)

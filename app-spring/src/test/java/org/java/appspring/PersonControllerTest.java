@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -75,6 +76,28 @@ public class PersonControllerTest {
             .andExpect(MockMvcResultMatchers.jsonPath("$.size()").value(Matchers.is(2)))
             .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(Matchers.is(person.getName())))
             .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value(Matchers.is(person2.getName())));
+    }
+
+    @Test
+    void testFindByIdPositiveScenario() throws Exception {
+        long personId = 1L;
+        ReflectionTestUtils.setField(person, "id", personId);
+        Mockito.when(personService.findById(personId)).thenReturn(person);
+
+        ResultActions response = mockMvc.perform(MockMvcRequestBuilders.get("/person/{id}", personId));
+        response.andDo(MockMvcResultHandlers.print())
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(Matchers.is(person.getName())));
+    }
+
+    @Test
+    void testFindByIdNegativeScenario() throws Exception {
+        long personId = 1L;
+        ReflectionTestUtils.setField(person, "id", personId);
+        Mockito.when(personService.findById(personId)).thenThrow(RuntimeException.class);
+
+        ResultActions response = mockMvc.perform(MockMvcRequestBuilders.get("/person/{id}", personId));
+        response.andDo(MockMvcResultHandlers.print());
     }
 
 }
