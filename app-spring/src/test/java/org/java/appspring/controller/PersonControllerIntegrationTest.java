@@ -8,7 +8,6 @@ import io.restassured.filter.log.LogDetail;
 import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.specification.RequestSpecification;
-import jakarta.transaction.Transactional;
 import org.java.appspring.AbstractIntegrationTest;
 import org.java.appspring.Person;
 import org.java.appspring.PersonRepository;
@@ -17,6 +16,7 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Arrays;
@@ -27,6 +27,9 @@ import java.util.List;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 // webEnvironment = DEFINED_PORT faz com que o servidor rode na porta real (ex: 8080) em vez de uma aleatória.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+// O Spring descarta o contexto ao final da classe
+// Os dados não vazam pra outros testes
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS) // TOMAR CUIDADO COM ISSO AQUI
 public class PersonControllerIntegrationTest extends AbstractIntegrationTest {
     @LocalServerPort
     private int port;
